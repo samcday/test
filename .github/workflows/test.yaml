@@ -12,12 +12,8 @@ jobs:
     container: archlinux:base-devel
     steps:
       - uses: actions/checkout@v3
-      - name: Setup Rclone
-        uses: AnimMouse/setup-rclone@v1
-        with:
-          rclone_config: ${{ secrets.RCLONE_CONFIG }}
-
       - run: |
+          pacman -Sy --noconfirm rclone
           mkdir repo
           rclone mount --daemon samcday-archlinux-msm8916: repo/
           repo-add repo/repo.db.tar.xz dnf5-5.1.15-3-x86_64.pkg.tar.zst
