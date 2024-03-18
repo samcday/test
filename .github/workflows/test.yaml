@@ -12,8 +12,13 @@ jobs:
     container: archlinux:base-devel
     steps:
       - uses: actions/checkout@v3
-      - run: |
+      - env:
+          RCLONE_CONFIG_BUCKET_TYPE: b2
+          RCLONE_CONFIG_BUCKET_ACCOUNT: ${{secrets.BUCKET_ACCOUNT}}
+          RCLONE_CONFIG_BUCKET_KEY: ${{secrets.BUCKET_KEY}}
+        run: |
           pacman -Sy --noconfirm rclone
           mkdir repo
-          rclone mount --daemon samcday-archlinux-msm8916: repo/
-          repo-add repo/repo.db.tar.xz dnf5-5.1.15-3-x86_64.pkg.tar.zst
+          rclone mount --daemon BUCKET: repo/
+          ls repo/
+          repo-add repo/samcday-archlinux-msm8916/repo.db.tar.xz dnf5-5.1.15-3-x86_64.pkg.tar.zst
