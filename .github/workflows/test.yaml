@@ -17,7 +17,7 @@ jobs:
           RCLONE_CONFIG_BUCKET_ACCOUNT: ${{secrets.BUCKET_ACCOUNT}}
           RCLONE_CONFIG_BUCKET_KEY: ${{secrets.BUCKET_KEY}}
         run: |
-          pacman -Sy --noconfirm rclone
+          pacman -Sy --noconfirm rclone fuse3
           mkdir repo
           rclone mount --daemon BUCKET: repo/
           ls repo/
