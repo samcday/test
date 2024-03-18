@@ -9,7 +9,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: archlinux:base-devel
     steps:
       - uses: actions/checkout@v3
       - env:
@@ -17,7 +16,7 @@ jobs:
           RCLONE_CONFIG_BUCKET_ACCOUNT: ${{secrets.BUCKET_ACCOUNT}}
           RCLONE_CONFIG_BUCKET_KEY: ${{secrets.BUCKET_KEY}}
         run: |
-          pacman -Sy --noconfirm rclone fuse3
+          apt install -y rclone
           mkdir repo
           rclone mount --daemon --log-level=DEBUG BUCKET: repo/
           ls repo/
