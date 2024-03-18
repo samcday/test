@@ -19,5 +19,6 @@ jobs:
           sudo apt install -y rclone
           mkdir repo
           rclone mount --daemon --log-level=DEBUG BUCKET: repo/
+          sleep 10
           ls repo/
           repo-add repo/samcday-archlinux-msm8916/repo.db.tar.xz dnf5-5.1.15-3-x86_64.pkg.tar.zst
