@@ -40,6 +40,14 @@ jobs:
           ls
           pacman -Sy --noconfirm rclone
           bucket=samcday-archlinux-msm8916
-          rclone copy BUCKET:$bucket/msm8916.db.* repo/
+
+          rclone copy BUCKET:$bucket/msm8916.db repo/
+          rclone copy BUCKET:$bucket/msm8916.files repo/
+
+          ln -s msm8916.db repo/msm8916.db.tar.xz
+          ln -s msm8916.files repo/msm8916.files.tar.xz
+
           repo-add repo/msm8916.db.tar.xz repo/*.pkg.tar.zst
-          rclone copy repo/msm8916.db.* BUCKET:$bucket/
+
+          rclone copy repo/msm8916.db BUCKET:$bucket/
+          rclone copy repo/msm8916.files BUCKET:$bucket/
