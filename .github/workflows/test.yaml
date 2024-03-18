@@ -49,5 +49,5 @@ jobs:
 
           repo-add repo/msm8916.db.tar.xz repo/*.pkg.tar.zst
 
-          rclone copy repo/msm8916.db BUCKET:$bucket/
-          rclone copy repo/msm8916.files BUCKET:$bucket/
+          rclone copy repo/msm8916.db.tar.xz BUCKET:$bucket/msm8916.db
+          rclone copy repo/msm8916.files.tar.xz BUCKET:$bucket/msm8916.files
