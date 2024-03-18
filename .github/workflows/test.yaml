@@ -7,8 +7,9 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
+    container: archlinux:base-devel
     steps:
       - uses: actions/checkout@v3
       - env:
@@ -16,7 +17,9 @@ jobs:
           RCLONE_CONFIG_BUCKET_ACCOUNT: ${{secrets.BUCKET_ACCOUNT}}
           RCLONE_CONFIG_BUCKET_KEY: ${{secrets.BUCKET_KEY}}
         run: |
-          sudo apt install -y rclone
+          set -uexo pipefail
+          # sudo apt install -y rclone
+          pacman --noconfirm -Sy rclone fuse3
           mkdir repo
           rclone mount --daemon --log-level=DEBUG BUCKET: repo/
           sleep 10
