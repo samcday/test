@@ -6,6 +6,9 @@ on:
     branches: [main]
   workflow_dispatch:
 
+concurrency:
+  group: packages
+
 jobs:
   packages:
     runs-on: ubuntu-latest
@@ -49,6 +52,6 @@ jobs:
 
           repo-add repo/msm8916.db.tar.xz repo/*.pkg.tar.zst
 
-          rclone repo/*.pkg.tar.zst BUCKET:$bucket/
+          rclone copy repo/*.pkg.tar.zst BUCKET:$bucket/
           rclone -L copy repo/msm8916.db BUCKET:$bucket/
           rclone -L copy repo/msm8916.files BUCKET:$bucket/
