@@ -19,6 +19,6 @@ jobs:
         run: |
           pacman -Sy --noconfirm rclone fuse3
           mkdir repo
-          rclone mount --daemon BUCKET: repo/
+          rclone mount --daemon --log-level=DEBUG BUCKET: repo/
           ls repo/
           repo-add repo/samcday-archlinux-msm8916/repo.db.tar.xz dnf5-5.1.15-3-x86_64.pkg.tar.zst
