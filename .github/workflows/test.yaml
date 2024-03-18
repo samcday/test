@@ -11,8 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: archlinux:base-devel
-      options:
-        --cap-add: SYS_ADMIN
+      options: --cap-add=SYS_ADMIN
     steps:
       - uses: actions/checkout@v3
       - env:
