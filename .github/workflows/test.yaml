@@ -7,23 +7,37 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
+  packages:
     runs-on: ubuntu-latest
-    container:
-      image: archlinux:base-devel
-      options: --cap-add=SYS_ADMIN --device=/dev/fuse
+    strategy:
+      matrix:
+        package:
+          - dnf5-5.1.15-3-x86_64.pkg.tar.zst
+          - systemd-gadget-0.0.1-1-any.pkg.tar.zst
     steps:
       - uses: actions/checkout@v3
+      - uses: actions/upload-artifact@v4
+        with:
+          name: package-${{ matrix.package }}
+          path: ${{ matrix.package }}
+  repo:
+    runs-on: ubuntu-latest
+    container: archlinux:base-devel
+    needs: packages
+    steps:
+      - name: Download All Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: repo/
+          pattern: package-*
+          merge-multiple: true
       - env:
           RCLONE_CONFIG_BUCKET_TYPE: b2
           RCLONE_CONFIG_BUCKET_ACCOUNT: ${{secrets.BUCKET_ACCOUNT}}
           RCLONE_CONFIG_BUCKET_KEY: ${{secrets.BUCKET_KEY}}
         run: |
           set -uexo pipefail
-          # sudo apt install -y rclone
-          pacman --noconfirm -Sy rclone fuse3
-          mkdir repo
-          rclone mount --daemon --log-level=DEBUG BUCKET: repo/
-          sleep 10
-          ls repo/
-          repo-add repo/samcday-archlinux-msm8916/repo.db.tar.xz dnf5-5.1.15-3-x86_64.pkg.tar.zst
+          ls
+          bucket=samcday-archlinux-msm8916
+          rclone copy BUCKET:$bucket/repo.db.* repo/
+          repo-add repo/repo.db.tar.xz repo/*.pkg.tar.zst
