@@ -38,7 +38,7 @@ jobs:
         run: |
           set -uexo pipefail
           ls
-          pacman -Sy rclone
+          pacman -Sy --noconfirm rclone
           bucket=samcday-archlinux-msm8916
           rclone copy BUCKET:$bucket/repo.db.* repo/
           repo-add repo/repo.db.tar.xz repo/*.pkg.tar.zst
